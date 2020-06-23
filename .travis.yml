@@ -3,18 +3,20 @@ services:
     - docker
 
 before_install:
-    - docker build -t calkines/react-test -f ./client/Dockerfile.dev .
+    - docker build -t calkines/react-test -f ./client/Dockerfile.dev ./client
 
 script:
     - docker run calkines/react-test npm test -- --covarage
 
 after_success:
+    #build stage
     - docker build -t calkines/multi-client ./client
     - docker build -t calkines/multi-nginx ./nginx
     - docker build -t calkines/multi-server ./server
-    - docker build -t calkines/multi-worker ./worker
+    - docker build -t calkines/multi-worker ./worker    
+    #login in docker hub
     - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
-
+    #pushes image
     - docker push calkines/multi-client
     - docker push calkines/multi-server
     - docker push calkines/multi-nginx 
