@@ -8,7 +8,7 @@
             "essential": false            
         },
         {
-            "name":"client",
+            "name":"server",
             "image":"calkines/multi-server",
             "hostname":"api",
             "essential": false  
